@@ -13,18 +13,18 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom" style="background-color:rgb(223, 45, 28);">  <!-- Color personalizado -->
+    <nav class="navbar navbar-expand-lg navbar-custom" style="background-color:rgb(223, 45, 28);">  
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
                 <img src="{{ url_for('static', filename='home.png') }}" alt="Inicio" class="navbar-logo">
             </a>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto me-5">  <!-- Alinea los ítems a la derecha -->
+                <ul class="navbar-nav ms-auto me-5">  
                     <li class="nav-item">
-                        <a class="nav-link" href="/predecir">Predecir Uno</a>
+                        <a class="nav-link" href="/clasificar">Clasificar Uno</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/prediccionesArchivo">Predecir Archivo</a>
+                        <a class="nav-link" href="/clasificarArchivo">Clasificar Archivo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/reentreno">Reentrenar Modelo</a>
