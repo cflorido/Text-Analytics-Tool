@@ -20,10 +20,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-5">  <!-- Alinea los ítems a la derecha -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/clasificar">clasificar Uno</a>
+                        <a class="nav-link" href="/clasificar">Clasificar Uno</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/clasificarArchivo">clasificar Archivo</a>
+                        <a class="nav-link" href="/clasificarArchivo">Clasificar Archivo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/reentreno">Reentrenar Modelo</a>
@@ -32,7 +32,43 @@
             </div>
         </div>
     </nav>
-    <p>prediccion archivo</p>
+    <div class="container mt-5">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h1>Instrucciones</h1>
+                <p>Por favor, sigue estos pasos para subir y clasificar el archivo:</p>
+                <ol class="text-start d-inline-block">
+                    <li>Selecciona un archivo en formato <strong>CSV</strong> desde tu dispositivo.</li>
+                    <li>Asegúrate de que el archivo contenga las columnas necesarias: <strong>"Título"</strong> y <strong>"Cuerpo"</strong> de la noticia.</li>
+                    <li>Haz clic en el botón <strong>"Subir Archivo"</strong> para enviarlo y obtener la clasificación.</li>
+                </ol>
+            </div>
+
+            <div class="col-md-4 text-end">
+                <img src="{{ url_for('static', filename='robot.png') }}" alt="Robot Clasificador" class="img-fluid" width="300">
+            </div>
+
+            <div class="col-md-4 text-end">
+                <br>
+            </div>
+        </div>
+
+        <h2 class="text-center">Subir Archivo</h2>
+        <div class="card p-4 shadow-sm">
+            <form action="/clasificarEnvioArchivo" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Selecciona un archivo:</label>
+                    <input class="form-control" type="file" name="file" id="file" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-custom">Entrenar Con Archivo</button>
+                </div>
+            </form>
+        </div>
+        <br>
+    </div>
+
     <footer class="footer bg-dark text-white text-center py-3">
         <div class="container">
             <p>© 2025 Grupo 9 - Todos los derechos reservados</p>

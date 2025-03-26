@@ -20,10 +20,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-5"> 
                     <li class="nav-item">
-                        <a class="nav-link" href="/clasificar">clasificar Uno</a>
+                        <a class="nav-link" href="/clasificar">Clasificar Uno</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/clasificarArchivo">clasificar Archivo</a>
+                        <a class="nav-link" href="/clasificarArchivo">Clasificar Archivo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/reentreno">Reentrenar Modelo</a>
@@ -37,6 +37,26 @@
     <br>
     
     <div class="container mt-5">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h1>Instrucciones</h1>
+                <p>Por favor, sigue estos pasos para clasificar la noticia:</p>
+                <ol class="text-start d-inline-block">
+                    <li>Escribe el título de la noticia en el primer campo de texto.</li>
+                    <li>Escribe el cuerpo completo de la noticia en el segundo campo.</li>
+                    <li>Haz clic en el botón <strong>"Clasificar"</strong> para obtener el resultado.</li>
+                </ol>
+            </div>
+
+            <div class="col-md-4 text-end">
+                <img src="{{ url_for('static', filename='robot.png') }}" alt="Robot Clasificador" class="img-fluid" width="300">
+            </div>
+
+            <div class="col-md-4 text-end">
+                <br>
+            </div>
+        </div>
         <h1 class="text-center">Clasificador</h1> 
         <br>
         <form action="/clasificarEnvio" method="POST">
@@ -49,29 +69,30 @@
                 <textarea class="form-control w-100" name="cuerpo" rows="5" placeholder="Escribe el cuerpo aqui..." required></textarea>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Clasificar</button>
+                <button type="submit" class="btn btn-custom ">Clasificar</button>
             </div>
+            <br>
         </form>
-            {% if results %}
-                <h1>Resultados de la Clasificaion:</h2>
-                <div>
-                    <h3> Titulo: </h3>
-                    <p> {{ results.titulo }}</p>
-                    <br>
-                    <h3> Cuerpo:</h3>
-                    <p> {{ results.titulo }}</p>
-                    <br>
-                    <h3> Slasificacion:</h3>
-                    <p>  Se ha clasificado la noticia como: {{ results.clasificacion }}</p>
-                    <br>
-                    <h3> Provabilidad de verdadera:</h3>
-                    <p> {{ results.ProbVerdaderpa }}</p>
-                    <br>
-                    <h3> Provabilidad de Falsa:</h3>
-                    <p> {{ results.ProbFalsa }}</p>
-                    <br>
-                </div>
-            {% endif %}
+        {% if results %}
+            <h1>Resultados de la Clasificaion:</h2>
+            <div>
+                <h3> Titulo: </h3>
+                <p> {{ results.titulo }}</p>
+                <br>
+                <h3> Cuerpo:</h3>
+                <p> {{ results.titulo }}</p>
+                <br>
+                <h3> Slasificacion:</h3>
+                <p>  Se ha clasificado la noticia como: {{ results.clasificacion }}</p>
+                <br>
+                <h3> Provabilidad de verdadera:</h3>
+                <p> {{ results.ProbVerdaderpa }}</p>
+                <br>
+                <h3> Provabilidad de Falsa:</h3>
+                <p> {{ results.ProbFalsa }}</p>
+                <br>
+            </div>
+        {% endif %}
     </div>
 
     

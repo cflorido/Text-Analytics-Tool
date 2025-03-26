@@ -59,6 +59,39 @@ def clasificarEnvio():
     #return response_json    
     return render_template('clasificar.html', results=response_dict)
 
+@app.route('/clasificarEnvioArchivo', methods=["POST"])
+def clasificarEnvioArchivo():
+
+    #--------------------Envio de texto a la API (HACER)------------------
+    a ="""     payload = {
+        "titulo": titulo,
+        "cuerpo": cuerpo
+    }
+    try:
+       response = requests.post('http://API/clasificar', json=payload)
+        if response.status_code == 200:
+                return jsonify(response.json()) 
+                ...
+        else:
+            return jsonify({"error": "Failed to get a valid response from the API"}), response.status_code
+            ...
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": f"Request failed: {str(e)}"}), 500 """
+    # --------------------RESPUESTA FALSA DEL API-----------------
+    
+    #La respuesta es un json que hay que hacerle parsing
+    
+    fake_response = [{
+        "titulo": "titulo",
+        "cuerpo": "cuepo",
+        "clasificacion": "Verdadero",
+        "ProbVerdaderpa": 0.85,  
+        "ProbFalsa": 0.15
+    }]
+    response_list =  jsonify(fake_response)
+    
+    return response_list 
+    #return render_template('clasificar.html', results=response_list)
 
 #----------Main--------------------------
 if __name__ == '__main__':
