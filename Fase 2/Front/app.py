@@ -39,10 +39,10 @@ def clasificarEnvio():
         "titulo": titulo,
         "cuerpo": cuerpo,
         "clasificacion": "Verdadero" if "ejemplo" in titulo.lower() else "Falso",
-        "ProbVerdaderpa": 0.85,  
+        "ProbVerdadera": 0.85,  
         "ProbFalsa": 0.15
     }
-    response_dict =  fake_response
+    response_dict = fake_response
     
     #return response_json    
     return render_template('clasificar.html', results=response_dict)
@@ -55,11 +55,11 @@ def clasificarEnvioArchivo():
 
     file = request.files['file']
 
-    # Check if a file was selected
+    
     if file.filename == '':
         return jsonify({"error": "No ha seleccionado un archivo"}), 400
 
-    # Validate the file extension
+   
     if not file.filename.rsplit('.', 1)[1].lower() == 'csv':
         return jsonify({"error": "Solo se permiten archivos de tipo CSV "}), 400
     
@@ -146,6 +146,43 @@ def clasificarEnvioArchivo():
     
     #return response_list 
     return render_template('clasificarArchivo.html', results=response_list)
+
+@app.route('/reentrenar', methods=["POST"])
+def reentrenarEnvioArchivo():
+    if 'file' not in request.files:
+        return jsonify({"error": "No ha enviado el archivo"}), 400
+
+    file = request.files['file']
+
+
+    if file.filename == '':
+        return jsonify({"error": "No ha seleccionado un archivo"}), 400
+
+
+    if not file.filename.rsplit('.', 1)[1].lower() == 'csv':
+        return jsonify({"error": "Solo se permiten archivos de tipo CSV "}), 400
+    
+
+    #TODO--------------------Envio de texto a la API ()------------------
+
+    # --------------------RESPUESTA FALSA DEL API-----------------
+    
+    #TODO La respuesta es un json que hay que hacerle parsing
+    
+    fake_response = {
+        "F1": 0.9867,
+        "Recall": 0.982,
+        "Precision": 0.984,
+        "Accuracy": 0.991
+    }
+
+    formatted_response = {key: f"{value*100:.2f}%" for key, value in fake_response.items()}
+    
+    response_dict =  formatted_response
+    
+    #return response_list 
+    return render_template('reentreno.html', results=response_dict)
+
 
 #----------Main--------------------------
 if __name__ == '__main__':

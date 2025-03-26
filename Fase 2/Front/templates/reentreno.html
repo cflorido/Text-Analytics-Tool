@@ -32,7 +32,78 @@
             </div>
         </div>
     </nav>
-    <p>reentreno</p>
+    <div class="container mt-5">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h1>Instrucciones</h1>
+                <p>Para reentrenar el modelo, sube un archivo CSV con los datos etiquetados correctamente siguiendo estos pasos:</p>
+                <ol class="text-start d-inline-block">
+                    <li>Selecciona un archivo en formato <strong>CSV</strong> desde tu dispositivo.</li>
+                    <li>Asegúrate de que el archivo contenga las columnas necesarias: <strong>"Título"</strong>, <strong>"Descripcion"</strong> y <strong>"Label"</strong> (1/0).</li>
+                    <li>Verifica que los datos estén correctamente estructurados para mejorar el rendimiento del modelo.</li>
+                    <li>Haz clic en el botón <strong>"Subir Archivo"</strong> para iniciar el proceso de reentrenamiento.</li>
+                </ol>
+            </div>
+            
+            <div class="col-md-4 text-end">
+                <img src="{{ url_for('static', filename='robot.png') }}" alt="Robot Clasificador" class="img-fluid" width="300">
+            </div>
+
+            <div class="col-md-4 text-end">
+                <br>
+            </div>
+        </div>
+
+        <h1 class="text-center">Subir Archivo</h1>
+        <div class="card p-4 shadow-sm">
+            <form action="/reentrenar" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="archivoEntrenamiento" class="form-label">Selecciona un archivo:</label>
+                    <input class="form-control" type="file" name="file" id="file" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-custom">Reentrenar</button>
+                </div>
+            </form>
+        </div>
+        <br>
+        {% if results %}
+        <h1>Resultados del reentrenamiento:</h1>
+        <div class="container mt-4">
+            <div class="card p-4 shadow-sm">
+                <h3 class="mb-3">Metricas:</h3>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="result-card">
+                            <p>F1</p>
+                            <h4>{{ results.F1 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="result-card">
+                            <p>Recall</p>
+                            <h4>{{ results.Recall }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="result-card">
+                            <p>Precision</p>
+                            <h4>{{ results.Precision }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="result-card">
+                            <p>Accuracy</p>
+                            <h4>{{ results.Accuracy }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endif %}
+    </div>
     <footer class="footer bg-dark text-white text-center py-3">
         <div class="container">
             <p>© 2025 Grupo 9 - Todos los derechos reservados</p>
