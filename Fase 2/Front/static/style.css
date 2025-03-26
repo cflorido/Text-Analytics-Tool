@@ -1,0 +1,40 @@
+.navbar-custom .navbar-nav .nav-link {
+    color: white !important;
+    font-weight: bold !important; 
+}
+
+.navbar-custom .navbar-nav {
+    gap: 20px; 
+}
+
+.custom-subtitle {
+    color: rgb(223, 45, 28) !important;
+    font-weight: bold !important; 
+}
+
+.custom-title {
+    font-weight: bold !important; 
+}
+
+.custom-h2{
+    font-weight: bold !important; 
+}
+
+/* .banner {
+    background-image: url('../static/banner.jpg');
+    background-size: center;
+    background-position: center;
+    width: 100%;
+    height: 400px;  
+}
+ */
+
+ html {
+    font-size: 12px; /* Cambia este valor para ajustar el tamaño base */
+}
+
+.navbar-logo {
+    width: 40px; /* Ajusta el tamaño según necesites */
+    filter: invert(100%);
+}
+
