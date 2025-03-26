@@ -39,7 +39,7 @@
     <div class="container mt-5">
         <h1 class="text-center">Clasificador</h1> 
         <br>
-        <form action="/clasificar" method="POST">
+        <form action="/clasificarEnvio" method="POST">
             <h2 class="text-left">Título</h2>
             <div class="mb-3">
                 <textarea class="form-control w-100" name="titulo" rows="5" placeholder="Escribe el titulo aqui..." required></textarea>
@@ -52,7 +52,29 @@
                 <button type="submit" class="btn btn-primary">Clasificar</button>
             </div>
         </form>
+            {% if results %}
+                <h1>Resultados de la Clasificaion:</h2>
+                <div>
+                    <h3> Titulo: </h3>
+                    <p> {{ results.titulo }}</p>
+                    <br>
+                    <h3> Cuerpo:</h3>
+                    <p> {{ results.titulo }}</p>
+                    <br>
+                    <h3> Slasificacion:</h3>
+                    <p>  Se ha clasificado la noticia como: {{ results.clasificacion }}</p>
+                    <br>
+                    <h3> Provabilidad de verdadera:</h3>
+                    <p> {{ results.ProbVerdaderpa }}</p>
+                    <br>
+                    <h3> Provabilidad de Falsa:</h3>
+                    <p> {{ results.ProbFalsa }}</p>
+                    <br>
+                </div>
+            {% endif %}
     </div>
+
+    
 
 
     <footer class="footer bg-dark text-white text-center py-3">
