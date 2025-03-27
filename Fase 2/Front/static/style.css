@@ -1,0 +1,37 @@
+.navbar-custom .navbar-nav .nav-link {
+    color: white !important;
+    font-weight: bold !important; 
+}
+
+.navbar-custom .navbar-nav {
+    gap: 20px; 
+}
+
+.custom-subtitle {
+    color: rgb(223, 45, 28) !important;
+    font-weight: bold !important; 
+}
+
+.custom-title {
+    font-weight: bold !important; 
+}
+
+.custom-h2{
+    font-weight: bold !important; 
+}
+
+
+ html {
+    font-size: 12px; 
+}
+
+.navbar-logo {
+    width: 40px; 
+    filter: invert(100%);
+}
+
+.btn-custom {
+    background-color: rgb(223, 45, 28) !important; ; 
+    color: white !important;
+    border: none; /* Sin borde */
+}
