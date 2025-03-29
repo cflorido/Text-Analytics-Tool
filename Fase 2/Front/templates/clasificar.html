@@ -75,24 +75,25 @@
             <br>
         </form>
         {% if results %}
-            <h1>Resultados de la Clasificaion:</h2>
-            <div>
-                <h3> Titulo: </h3>
-                <p> {{ results.titulo }}</p>
-                <br>
-                <h3> Cuerpo:</h3>
-                <p> {{ results.cuerpo }}</p>
-                <br>
-                <h3> Clasificacion:</h3>
-                <p>  Se ha clasificado la noticia como: {{ results.clasificacion }}</p>
-                <br>
-                <h3> Provabilidad de verdadera:</h3>
-                <p> {{ results.ProbVerdadera }}</p>
-                <br>
-                <h3> Provabilidad de Falsa:</h3>
-                <p> {{ results.ProbFalsa }}</p>
-                <br>
-            </div>
+            <h1>Resultados de la Clasificación:</h2>
+                <div>
+                    <h3>Título:</h3>
+                    <p>{{ results.titulo }}</p>
+                    <br>
+                    <h3>Cuerpo:</h3>
+                    <p>{{ results.cuerpo }}</p>
+                    <br>
+                    <h3>Clasificación:</h3>
+                    <p>Se ha clasificado la noticia como: {{ results.clasificacion }}</p>
+                    <br>
+                    <h3>Probabilidad de verdadera:</h3>
+                    <p>{{ results.ProbVerdadera }}</p>
+                    <br>
+                    <h3>Probabilidad de falsa:</h3>
+                    <p>{{ results.ProbFalsa }}</p>
+                    <br>
+                </div>
+                
         {% endif %}
     </div>
 
