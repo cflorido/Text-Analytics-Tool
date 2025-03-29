@@ -4,6 +4,7 @@ from joblib import load, dump
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from sklearn.model_selection import train_test_split
 from preprocessing import dropna_and_combine_text, text_preprocessing_function, vectorization_function
 from typing import List
 
@@ -16,7 +17,7 @@ app = FastAPI()
 class NewsItem(BaseModel):
     Titulo: str
     Descripcion: str
-    Fecha: str
+
 
 
 class RetrainData(BaseModel):
@@ -42,33 +43,57 @@ def predict(news_list: List[NewsItem]):
         "predictions": predictions.tolist(),
         "probabilidades": [list(probs) for probs in probabilidades]
     }
+
 @app.post("/retrain/")
 def retrain(data: list[RetrainData]):
-    df = pd.DataFrame([item.dict() for item in data])
-    X = df.drop(columns=["ID", "Label"])
-    y = df["Label"]
+    global df_historical
+
+
+    df_historical = pd.DataFrame([item.dict() for item in data])
+
+
+    X = df_historical.drop(columns=["ID","Label"])
+    y = df_historical["Label"]
+
+
     X_processed = pipeline[:-1].transform(X)
-    
-    # Entrenamiento del nuevo modelo
+
+
+    X_train, X_val, y_train, y_val = train_test_split(X_processed, y, test_size=0.2, random_state=42)
+
+
     new_model = GradientBoostingClassifier(n_estimators=500, max_depth=5, criterion="friedman_mse")
-    new_model.fit(X_processed, y)
+    new_model.fit(X_train, y_train)
 
-    # Predicción para calcular métricas
-    y_pred = new_model.predict(X_processed)
 
-    f1 = f1_score(y, y_pred, average="weighted")
-    recall = recall_score(y, y_pred, average="weighted")
-    precision = precision_score(y, y_pred, average="weighted")
-    accuracy = accuracy_score(y, y_pred)  # Nueva métrica
+    y_train_pred = new_model.predict(X_train)
+    train_f1 = f1_score(y_train, y_train_pred, average="weighted")
+    train_recall = recall_score(y_train, y_train_pred, average="weighted")
+    train_precision = precision_score(y_train, y_train_pred, average="weighted")
+    train_accuracy = accuracy_score(y_train, y_train_pred)
 
-    # Guardar el nuevo pipeline
+
+    y_val_pred = new_model.predict(X_val)
+    val_f1 = f1_score(y_val, y_val_pred, average="weighted")
+    val_recall = recall_score(y_val, y_val_pred, average="weighted")
+    val_precision = precision_score(y_val, y_val_pred, average="weighted")
+    val_accuracy = accuracy_score(y_val, y_val_pred)
+
+
     pipeline.steps[-1] = ("classification", new_model)
     dump(pipeline, "pipelineRetrain.joblib")
-
-    # Devolver métricas en el orden deseado
+    dump(new_model, "modelRetrain.joblib")
     return {
-        "F1": f1,
-        "Recall": recall,
-        "Precision": precision,
-        "Accuracy": accuracy
+        "Training Metrics": {
+            "F1": train_f1,
+            "Recall": train_recall,
+            "Precision": train_precision,
+            "Accuracy": train_accuracy
+        },
+        "Validation Metrics": {
+            "F1": val_f1,
+            "Recall": val_recall,
+            "Precision": val_precision,
+            "Accuracy": val_accuracy
+        }
     }

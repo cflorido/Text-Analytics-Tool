@@ -33,7 +33,7 @@ def clasificarEnvio():
     titulo = request.form.get("titulo")
     cuerpo = request.form.get("cuerpo")
     
-    payload = {"Titulo": titulo, "Descripcion": cuerpo, "Fecha": "2025-03-28"}  
+    payload = {"Titulo": titulo, "Descripcion": cuerpo}  
     try:
         response = requests.post(f"{API_URL}/predict/", json=payload)
         response.raise_for_status()  
@@ -71,7 +71,6 @@ def clasificarEnvioArchivo():
 
     try:
         df = pd.read_csv(file, sep=";")
-        df["Fecha"] = df.get("Fecha", pd.Timestamp.today().strftime("%d/%m/%Y"))  
 
         noticias = df.to_dict(orient="records")
         response = requests.post(f"{API_URL}/predictMany", json=noticias)
@@ -129,8 +128,16 @@ def reentrenarEnvioArchivo():
         result = response.json()
 
 
-        formatted_response = {key: f"{value*100:.2f}%" for key, value in result.items()}
-
+        formatted_response = {
+            "Train_F1": f"{result['Training Metrics']['F1']*100:.2f}%",
+            "Train_Recall": f"{result['Training Metrics']['Recall']*100:.2f}%",
+            "Train_Precision": f"{result['Training Metrics']['Precision']*100:.2f}%",
+            "Train_Accuracy": f"{result['Training Metrics']['Accuracy']*100:.2f}%",
+            "Val_F1": f"{result['Validation Metrics']['F1']*100:.2f}%",
+            "Val_Recall": f"{result['Validation Metrics']['Recall']*100:.2f}%",
+            "Val_Precision": f"{result['Validation Metrics']['Precision']*100:.2f}%",
+            "Val_Accuracy": f"{result['Validation Metrics']['Accuracy']*100:.2f}%"
+        }
     except pd.errors.ParserError:
         return jsonify({"error": "Error al leer el archivo CSV. Verifica el formato."}), 400
     except ValueError as e:

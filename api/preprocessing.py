@@ -55,7 +55,7 @@ def procesar(texto):
     return ' '.join(palabras)
 
 def dropna_and_combine_text(df):
-    df_clean = df.dropna(subset=['Titulo', 'Descripcion', 'Fecha']).copy()
+    df_clean = df.dropna(subset=['Titulo', 'Descripcion']).copy()
     df_clean['Texto'] = df_clean['Titulo'] + ' ' + df_clean['Descripcion']
     return df_clean['Texto']
 

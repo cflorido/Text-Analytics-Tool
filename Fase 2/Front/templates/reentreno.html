@@ -70,41 +70,72 @@
         </div>
         <br>
         {% if results %}
-        <h1>Resultados del reentrenamiento:</h1>
-        <div class="container mt-4">
-            <div class="card p-4 shadow-sm">
-                <h3 class="mb-3">Métricas:</h3>
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <div class="result-card">
-                            <p>F1</p>
-                            <h4>{{ results.F1 }}</h4>
-                        </div>
+    <h1>Resultados del reentrenamiento:</h1>
+    <div class="container mt-4">
+        <div class="card p-4 shadow-sm">
+            <h3 class="mb-3">Métricas de Entrenamiento:</h3>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>F1</p>
+                        <h4>{{ results.Train_F1 }}</h4>
                     </div>
-                    <div class="col-md-3">
-                        <div class="result-card">
-                            <p>Recall</p>
-                            <h4>{{ results.Recall }}</h4>
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>Recall</p>
+                        <h4>{{ results.Train_Recall }}</h4>
                     </div>
-                    <div class="col-md-3">
-                        <div class="result-card">
-                            <p>Precisión</p>
-                            <h4>{{ results.Precision }}</h4>
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>Precisión</p>
+                        <h4>{{ results.Train_Precision }}</h4>
                     </div>
-                    <div class="col-md-3">
-                        <div class="result-card">
-                            <p>Exactitud</p>
-                            <h4>{{ results.Accuracy }}</h4>
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>Exactitud</p>
+                        <h4>{{ results.Train_Accuracy }}</h4>
                     </div>
                 </div>
             </div>
         </div>
+        
         <br>
         
-        {% endif %}
+        <div class="card p-4 shadow-sm">
+            <h3 class="mb-3">Métricas de Validación:</h3>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>F1</p>
+                        <h4>{{ results.Val_F1 }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>Recall</p>
+                        <h4>{{ results.Val_Recall }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>Precisión</p>
+                        <h4>{{ results.Val_Precision }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="result-card">
+                        <p>Exactitud</p>
+                        <h4>{{ results.Val_Accuracy }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+    <br>
     </div>
     <footer class="footer bg-dark text-white text-center py-3">
         <div class="container">
