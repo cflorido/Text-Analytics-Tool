@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory
 import pandas as pd
+import requests
 
 app = Flask(__name__)
+API_URL = "http://127.0.0.1:8000"
+
 #------------Front------------------
 @app.route('/')
 def home():
@@ -22,167 +25,120 @@ def reentreno():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
-#----------Interaccion con el API-----------
+
+#----------Interacción con el API-----------
 
 @app.route('/clasificarEnvio', methods=["POST"])
 def clasificarEnvio():
-    titulo = request.form.get("titulo") 
-    cuerpo = request.form.get("cuerpo") 
+    titulo = request.form.get("titulo")
+    cuerpo = request.form.get("cuerpo")
+    
+    payload = {"Titulo": titulo, "Descripcion": cuerpo, "Fecha": "2025-03-28"}  
+    try:
+        response = requests.post(f"{API_URL}/predict/", json=payload)
+        response.raise_for_status()  
+        result = response.json()
+        clasificacion = "Verdadero" if result["prediction"] == 1 else "Falso"
+        probabilidades = result.get("probabilidades", [0, 0])
+        response_dict = {
+            "titulo": titulo,
+            "cuerpo": cuerpo,
+            "clasificacion": clasificacion,
+            "ProbVerdadera": probabilidades[1],
+            "ProbFalsa": probabilidades[0]
+        }
+    except requests.exceptions.RequestException:
+        response_dict = {"error": "No se pudo conectar con la API"}
 
-    #TODO--------------------Envio de texto a la API (HACER)------------------
-
-    #--------------------RESPUESTA FALSA DEL API-----------------
-    
-    #TODOLa respuesta es un json que hay que hacerle parsing
-    
-    fake_response = {
-        "titulo": titulo,
-        "cuerpo": cuerpo,
-        "clasificacion": "Verdadero" if "ejemplo" in titulo.lower() else "Falso",
-        "ProbVerdadera": 0.85,  
-        "ProbFalsa": 0.15
-    }
-    response_dict = fake_response
-    
-    #return response_json    
     return render_template('clasificar.html', results=response_dict)
 
+def validar_archivo(file):
+    """Verifica si el archivo es válido (CSV no vacío)"""
+    if 'file' not in request.files:
+        return "No ha enviado el archivo"
+    if file.filename == '':
+        return "No ha seleccionado un archivo"
+    if not file.filename.lower().endswith('.csv'):
+        return "Solo se permiten archivos de tipo CSV"
+    return None 
 
 @app.route('/clasificarEnvioArchivo', methods=["POST"])
 def clasificarEnvioArchivo():
-    if 'file' not in request.files:
-        return jsonify({"error": "No ha enviado el archivo"}), 400
+    file = request.files.get('file')
+    error = validar_archivo(file)
+    if error:
+        return jsonify({"error": error}), 400
 
-    file = request.files['file']
+    try:
+        df = pd.read_csv(file, sep=";")
+        df["Fecha"] = df.get("Fecha", pd.Timestamp.today().strftime("%d/%m/%Y"))  
 
-    
-    if file.filename == '':
-        return jsonify({"error": "No ha seleccionado un archivo"}), 400
+        noticias = df.to_dict(orient="records")
+        response = requests.post(f"{API_URL}/predictMany", json=noticias)
+        response.raise_for_status()
+        resultados = response.json()
+        response_list = []
 
-   
-    if not file.filename.rsplit('.', 1)[1].lower() == 'csv':
-        return jsonify({"error": "Solo se permiten archivos de tipo CSV "}), 400
-    
+        for i, item in enumerate(noticias):
+            clasificacion = "Verdadero" if resultados["predictions"][i] == 1 else "Falso"
+            probabilidades = resultados["probabilidades"][i]
+            response_list.append({
+                "titulo": item.get("Titulo", "Sin título"),
+                "cuerpo": item.get("Descripcion", "Sin descripción"),
+                "clasificacion": clasificacion,
+                "ProbVerdadera": probabilidades[1],
+                "ProbFalsa": probabilidades[0]
+            })
+    except pd.errors.ParserError:
+        return jsonify({"error": "Error al leer el archivo CSV. Verifica el formato."}), 400
+    except requests.exceptions.RequestException:
+        return jsonify({"error": "No se pudo conectar con la API"}), 500
 
-    #TODO--------------------Envio de texto a la API ()------------------
-
-    # --------------------RESPUESTA FALSA DEL API-----------------
-    
-    #TODO La respuesta es un json que hay que hacerle parsing
-    
-    fake_response = [
-    {
-        "titulo": "Descubrimiento de agua en Marte",
-        "cuerpo": "Científicos confirman la presencia de agua líquida en Marte.",
-        "clasificacion": "Verdadero",
-        "ProbVerdadera": 0.92,
-        "ProbFalsa": 0.08
-    },
-    {
-        "titulo": "Nueva dieta milagrosa",
-        "cuerpo": "Expertos aseguran que esta dieta te hace perder 10 kg en una semana sin esfuerzo.",
-        "clasificacion": "Falso",
-        "ProbVerdadera": 0.10,
-        "ProbFalsa": 0.90
-    },
-    {
-        "titulo": "Avance en energía renovable",
-        "cuerpo": "Investigadores desarrollan un panel solar con un 50% más de eficiencia.",
-        "clasificacion": "Verdadero",
-        "ProbVerdadera": 0.87,
-        "ProbFalsa": 0.13
-    },
-    {
-        "titulo": "Conspiración sobre el 5G",
-        "cuerpo": "Las redes 5G están diseñadas para controlar la mente de las personas.",
-        "clasificacion": "Falso",
-        "ProbVerdadera": 0.05,
-        "ProbFalsa": 0.95
-    },
-    {
-        "titulo": "Vacuna contra el cáncer",
-        "cuerpo": "Científicos anuncian ensayos exitosos de una vacuna contra el cáncer.",
-        "clasificacion": "Verdadero",
-        "ProbVerdadera": 0.89,
-        "ProbFalsa": 0.11
-    },
-    {
-        "titulo": "Fin del mundo en 2025",
-        "cuerpo": "Un vidente asegura que el mundo se acabará el próximo año.",
-        "clasificacion": "Falso",
-        "ProbVerdadera": 0.07,
-        "ProbFalsa": 0.93
-    },
-    {
-        "titulo": "Nueva batería con 10 veces más duración",
-        "cuerpo": "Empresa tecnológica presenta prototipo de batería revolucionaria.",
-        "clasificacion": "Verdadero",
-        "ProbVerdadera": 0.82,
-        "ProbFalsa": 0.18
-    },
-    {
-        "titulo": "Descubrimiento de civilización alienígena",
-        "cuerpo": "Astrónomos detectan señales de radio de una civilización avanzada.",
-        "clasificacion": "Falso",
-        "ProbVerdadera": 0.20,
-        "ProbFalsa": 0.80
-    },
-    {
-        "titulo": "Chocolate ayuda a bajar de peso",
-        "cuerpo": "Nuevo estudio sugiere que comer chocolate en la noche reduce el peso.",
-        "clasificacion": "Falso",
-        "ProbVerdadera": 0.30,
-        "ProbFalsa": 0.70
-    },
-    {
-        "titulo": "Robots con conciencia propia",
-        "cuerpo": "Investigadores aseguran que han creado un robot con conciencia de sí mismo.",
-        "clasificacion": "Falso",
-        "ProbVerdadera": 0.15,
-        "ProbFalsa": 0.85
-    }]
-
-    response_list =  fake_response
-    
-    #return response_list 
     return render_template('clasificarArchivo.html', results=response_list)
 
 @app.route('/reentrenar', methods=["POST"])
 def reentrenarEnvioArchivo():
-    if 'file' not in request.files:
-        return jsonify({"error": "No ha enviado el archivo"}), 400
+    file = request.files.get('file')
 
-    file = request.files['file']
+    if not file:
+        return jsonify({"error": "No se proporcionó ningún archivo"}), 400
+
+    try:
+        df = pd.read_csv(file, sep=";")
+
+        df.rename(columns=lambda x: x.strip(), inplace=True)
 
 
-    if file.filename == '':
-        return jsonify({"error": "No ha seleccionado un archivo"}), 400
+        columnas_requeridas = {"ID", "Label", "Titulo", "Descripcion", "Fecha"}
+        if not columnas_requeridas.issubset(df.columns):
+            return jsonify({"error": "El archivo CSV no tiene las columnas requeridas"}), 400
 
 
-    if not file.filename.rsplit('.', 1)[1].lower() == 'csv':
-        return jsonify({"error": "Solo se permiten archivos de tipo CSV "}), 400
+        df["ID"] = df["ID"].astype(str)
+        df["Label"] = df["Label"].astype(int)
+        df["Fecha"] = df["Fecha"].astype(str)
+        df["Titulo"] = df["Titulo"].astype(str)
+        df["Descripcion"] = df["Descripcion"].astype(str)
+
+   
+        datos = df.to_dict(orient="records")
+
+
+        response = requests.post(f"{API_URL}/retrain/", json=datos)
+        response.raise_for_status()
+        result = response.json()
+
+
+        formatted_response = {key: f"{value*100:.2f}%" for key, value in result.items()}
+
+    except pd.errors.ParserError:
+        return jsonify({"error": "Error al leer el archivo CSV. Verifica el formato."}), 400
+    except ValueError as e:
+        return jsonify({"error": f"Error en los datos del CSV: {str(e)}"}), 400
+    except requests.exceptions.RequestException:
+        return jsonify({"error": "No se pudo conectar con la API"}), 500
     
-
-    #TODO--------------------Envio de texto a la API ()------------------
-
-    # --------------------RESPUESTA FALSA DEL API-----------------
-    
-    #TODO La respuesta es un json que hay que hacerle parsing
-    
-    fake_response = {
-        "F1": 0.9867,
-        "Recall": 0.982,
-        "Precision": 0.984,
-        "Accuracy": 0.991
-    }
-
-    formatted_response = {key: f"{value*100:.2f}%" for key, value in fake_response.items()}
-    
-    response_dict =  formatted_response
-    
-    #return response_list 
-    return render_template('reentreno.html', results=response_dict)
-
+    return render_template('reentreno.html', results=formatted_response)
 
 #----------Main--------------------------
 if __name__ == '__main__':
