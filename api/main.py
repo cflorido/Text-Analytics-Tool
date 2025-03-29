@@ -15,8 +15,10 @@ app = FastAPI()
 
 
 class NewsItem(BaseModel):
+    ID: str
     Titulo: str
     Descripcion: str
+    Fecha: str
 
 
 

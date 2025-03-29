@@ -33,7 +33,7 @@ def clasificarEnvio():
     titulo = request.form.get("titulo")
     cuerpo = request.form.get("cuerpo")
     
-    payload = {"Titulo": titulo, "Descripcion": cuerpo}  
+    payload = {"ID":"ID", "Titulo": titulo, "Descripcion": cuerpo, "Fecha": "29/03/2025"}  
     try:
         response = requests.post(f"{API_URL}/predict/", json=payload)
         response.raise_for_status()  
