@@ -61,16 +61,28 @@
         <h1 class="text-center">Ingrese</h1> 
         <br>
         <form action="/clasificarEnvio" method="POST">
+            <h2 class="text-left">ID de la Noticia</h2>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="id" value="ID" >
+            </div>
+        
+            <h2 class="text-left">Fecha de la Noticia</h2>
+            <div class="mb-3">
+                <input type="date" class="form-control" name="fecha" required>
+            </div>
+        
             <h2 class="text-left">Título</h2>
             <div class="mb-3">
-                <textarea class="form-control w-100" name="titulo" rows="5" placeholder="Escribe el titulo aqui..." required></textarea>
+                <textarea class="form-control w-100" name="titulo" rows="2" placeholder="Escribe el título aquí..." required></textarea>
             </div>
+        
             <h2 class="text-left">Cuerpo de la noticia</h2>
             <div class="mb-3">
-                <textarea class="form-control w-100" name="cuerpo" rows="5" placeholder="Escribe el cuerpo aqui..." required></textarea>
+                <textarea class="form-control w-100" name="cuerpo" rows="5" placeholder="Escribe el cuerpo aquí..." required></textarea>
             </div>
+        
             <div class="text-center">
-                <button type="submit" class="btn btn-custom ">Clasificar</button>
+                <button type="submit" class="btn btn-custom">Clasificar</button>
             </div>
             <br>
         </form>

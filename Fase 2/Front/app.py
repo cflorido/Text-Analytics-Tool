@@ -30,10 +30,17 @@ def favicon():
 
 @app.route('/clasificarEnvio', methods=["POST"])
 def clasificarEnvio():
+    id_noticia = request.form.get("id")  
     titulo = request.form.get("titulo")
     cuerpo = request.form.get("cuerpo")
+    fecha = request.form.get("fecha") 
     
-    payload = {"ID":"ID", "Titulo": titulo, "Descripcion": cuerpo, "Fecha": "29/03/2025"}  
+    payload = {
+        "ID": id_noticia,  
+        "Titulo": titulo,
+        "Descripcion": cuerpo,
+        "Fecha": fecha  
+    }
     try:
         response = requests.post(f"{API_URL}/predict/", json=payload)
         response.raise_for_status()  
