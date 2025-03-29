@@ -83,8 +83,8 @@ def retrain(data: list[RetrainData]):
 
 
     pipeline.steps[-1] = ("classification", new_model)
-    dump(pipeline, "pipelineRetrain.joblib")
-    dump(new_model, "modelRetrain.joblib")
+    dump(pipeline, "pipeline.joblib")
+    dump(new_model, "model.joblib")
     return {
         "Training Metrics": {
             "F1": train_f1,
