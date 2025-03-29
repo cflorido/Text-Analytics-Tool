@@ -91,7 +91,7 @@
             <h1>Resultados de la Clasificación:</h2>
                 <br>
                 <div class="card shadow-lg p-4">
-                    <h2 class="text-center text-primary mb-4">Resultados de la Clasificación</h2>
+                    <h2 class="text-center  mb-4">Resultados de la Clasificación</h2>
                     <div class="mb-3">
                         <h4 class="fw-bold text-dark">Título:</h4>
                         <p class="text-muted">{{ results.titulo }}</p>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="mb-3">
                         <h4 class="fw-bold text-dark">Clasificación:</h4>
-                        <p class="{{ 'text-success' if results.clasificacion == 'Verdadera' else 'text-danger' }}">
+                        <p class="{{ 'text-success' if results.clasificacion == 'Verdadero' else 'text-danger' }}">
                             Se ha clasificado la noticia como: <strong>{{ results.clasificacion }}</strong>
                         </p>
                     </div>
@@ -116,7 +116,7 @@
                     </div>
                     
                 </div>
-                
+                <br>
                 
         {% endif %}
     </div>
