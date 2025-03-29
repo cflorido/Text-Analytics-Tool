@@ -87,24 +87,36 @@
             <br>
         </form>
         {% if results %}
+        
             <h1>Resultados de la Clasificación:</h2>
-                <div>
-                    <h3>Título:</h3>
-                    <p>{{ results.titulo }}</p>
-                    <br>
-                    <h3>Cuerpo:</h3>
-                    <p>{{ results.cuerpo }}</p>
-                    <br>
-                    <h3>Clasificación:</h3>
-                    <p>Se ha clasificado la noticia como: {{ results.clasificacion }}</p>
-                    <br>
-                    <h3>Probabilidad de verdadera:</h3>
-                    <p>{{ results.ProbVerdadera }}</p>
-                    <br>
-                    <h3>Probabilidad de falsa:</h3>
-                    <p>{{ results.ProbFalsa }}</p>
-                    <br>
+                <br>
+                <div class="card shadow-lg p-4">
+                    <h2 class="text-center text-primary mb-4">Resultados de la Clasificación</h2>
+                    <div class="mb-3">
+                        <h4 class="fw-bold text-dark">Título:</h4>
+                        <p class="text-muted">{{ results.titulo }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="fw-bold text-dark">Cuerpo:</h4>
+                        <p class="text-muted">{{ results.cuerpo }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="fw-bold text-dark">Clasificación:</h4>
+                        <p class="{{ 'text-success' if results.clasificacion == 'Verdadera' else 'text-danger' }}">
+                            Se ha clasificado la noticia como: <strong>{{ results.clasificacion }}</strong>
+                        </p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="fw-bold text-dark">Probabilidad de que la noticia sea Verdadera:</h4>
+                        <p class="badge bg-success fs-5">{{ "%.2f"|format(results.ProbVerdadera) }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="fw-bold text-dark">Probabilidad de que la noticia sea Falsa:</h4>
+                        <p class="badge bg-danger fs-5">{{ "%.2f"|format(results.ProbFalsa) }}</p>
+                    </div>
+                    
                 </div>
+                
                 
         {% endif %}
     </div>
