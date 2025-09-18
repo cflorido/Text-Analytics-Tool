@@ -13,8 +13,12 @@ The solution was deployed as a **RESTful API using FastAPI**, exposing three mai
 Finally, a web application was developed to provide users with an intuitive interface for testing predictions, uploading datasets, and visualizing results. The system is designed for use by journalists, fact-checkers, political analysts, and institutional stakeholders. By automating disinformation detection, it reduces manual workload, accelerates content verification processes, and supports evidence-based decision-making in contexts where the spread of false information can have a significant social impact.
 
 ## Documents
-- [Project Report – English](#)  
-- [Reporte del Proyecto – Español](#)  
+- [Project Report – English](https://github.com/user-attachments/files/22415793/Project.Overview.pdf)
+- [Reporte del Proyecto – Español](https://github.com/user-attachments/files/22415794/Resumen.del.proyecto.pdf)
+
+## Presentations
+- [Presentation – English](https://github.com/user-attachments/files/22415820/Presentation.pdf)
+- [Presentacion – Español](https://github.com/user-attachments/files/22415815/Presentacion.pdf)
 
 ---
 
@@ -67,13 +71,6 @@ Fase2/
 ## Documentation
 - [Project Report – English](./Fase1/BI%20-%20Proyecto%201%20Etapa%201.pdf)  
 - [Reporte del Proyecto – Español](./Fase1/BI%20-%20Proyecto%201%20Etapa%201.pdf)  
-
----
-
-## Presentations
-- [Slides – English](#)  
-- [Slides – Spanish](#)  
-- [Project Video](./Fase1/LinkVideo.txt)  
 
 ---
 
