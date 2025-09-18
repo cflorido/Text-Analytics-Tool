@@ -66,11 +66,6 @@ Fase2/
 - Uvicorn (ASGI server)  
 - Deployment: Local / AWS / Google Cloud  
 
----
-
-## Documentation
-- [Project Report – English](./Fase1/BI%20-%20Proyecto%201%20Etapa%201.pdf)  
-- [Reporte del Proyecto – Español](./Fase1/BI%20-%20Proyecto%201%20Etapa%201.pdf)  
 
 ---
 
